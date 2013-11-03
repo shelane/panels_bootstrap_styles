@@ -8,3 +8,82 @@ function panels_bootstrap_styles_ctools_plugin_directory($module, $plugin) {
     return "plugins/$plugin";
   }
 }
+
+/**
+ * Implementation of hook_theme()
+ */
+function panels_bootstrap_styles_theme() {
+  $theme = array();
+
+  $theme['panels_bootstrap_pane'] = array(
+    'variables' => array('output' => array(), 'pane' => array(), 'display' => array()),
+    'path' => drupal_get_path('module', 'panels_bootstrap_pane') . '/templates',
+    'template' => 'panels-bootstrap-pane',
+  );
+
+  return $theme;
+}
+
+/**
+ * Retrieves a single or all substyles.
+ * @param string $name
+ * @return array
+ */
+function panels_bootstrap_styles_load_substyles($name = NULL) {
+  $substyles = &drupal_static(__FUNCTION__, array());
+
+  if (empty($substyles)) {
+    $substyles = module_invoke_all('panels_bootstrap_substyles');
+    $default = array(
+      'description' => '',
+    );
+    foreach ($substyles as $id => &$substyle) {
+      $substyle = $default + $substyle;
+      $substyle['title'] = !empty($substyle['title']) ? $substyle['title'] : $id;
+      $substyle['name'] = !empty($substyle['name']) ? $substyle['name'] : $id;
+    }
+  }
+
+  if ($name) {
+    return $substyles[$name];
+  }
+  return $substyles;
+}
+
+/**
+ * Implements hook_panels_bootstrap_substyles.
+ */
+function panels_bootstrap_styles_panels_bootstrap_substyles() {
+
+  $styles = array(
+    'panel' => array(
+      'name' => 'panel',
+      'title' => 'Panel',
+      'description' => 'Renders as bootstrap panel class.',
+      'panes' => TRUE,
+      'regions' => TRUE,
+      'collapsible' => TRUE,
+      'modifier_classes' => array(
+        'panel-primary' => 'Primary',
+        'panel-success' => 'Success',
+        'panel-info' => 'Info',
+        'panel-warning' => 'Warning',
+        'panel-danger' => 'Danger',
+      ),
+      'hide_classes' => TRUE,
+      'additional_classes' => TRUE,
+    ),
+    'jumbotron' => array(
+      'name' => 'jumbotron',
+      'title' => 'Jumbotron',
+      'description' => 'Renders as bootstrap jumbotron class.',
+      'panes' => TRUE,
+      'regions' => TRUE,
+      'collapsible' => FALSE,
+      'modifiers' => FALSE,
+      'hide_options' => TRUE,
+      'additional_classes' => TRUE,
+    ),
+  );
+  return $styles;
+}
