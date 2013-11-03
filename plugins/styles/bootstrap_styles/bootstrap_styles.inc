@@ -14,7 +14,7 @@ $plugin = array(
   'settings form' => 'panels_bootstrap_styles_settings_form',
   'pane settings form' => 'panels_bootstrap_styles_settings_form',
   'defaults' => array(
-    'modifier' => '',
+    'modifier_class' => '',
     'hide_classes' => array(),
     'additional_classes' => array(),
     'collapsible' => FALSE,
@@ -51,7 +51,7 @@ function panels_bootstrap_styles_merge_plugin($plugin, $style_name, $substyle) {
   $plugin['name'] = $style_name . ':' . $substyle['name'];
   $plugin['title'] = 'Bootstrap Styles: ' . check_plain($substyle['title']);
   $plugin['description'] = check_plain($substyle['description']);
-  $plugin['style_info'] = $substyle;
+  $plugin['substyle'] = $substyle;
   if (!empty($substyle['panes'])) {
     $plugin['render pane'] = 'panels_bootstrap_styles_render_pane';
   }
@@ -76,8 +76,30 @@ function theme_panels_bootstrap_styles_render_region(&$vars) {
  * Theme function for the pane style.
  */
 function theme_panels_bootstrap_styles_render_pane(&$variables) {
+  $settings = $variables['settings'];
+  $style = $variables['style'];
+  $substyle = $style['substyle'];
 
-  return 'PANE';
+  $base = $substyle['name'];
+  $modifier = !empty($settings['modifier_class']) ? $settings['modifier_class'] : 'default';
+
+  $style = array(
+    'base_class' => $base,
+    'modifier_class' => $base . '-' . $modifier,
+    'hide' => isset($settings['hide_classes']) ? array_filter($settings['hide_classes']) : array(),
+    'additional' => isset($settings['additional_classes']) ? array_filter($settings['additional_classes']) : array(),
+    'title_class' => $base . '-title',
+    'header_class' => $base . '-heading',
+    'content_class' => $base . '-body',
+    'footer_class' => $base . '-footer',
+  );
+
+  $variables['#collapsible'] = !empty($settings['collapsible']);
+  $variables['#collapsed'] = !empty($settings['collapsible']) && !empty($settings['collapsed']);
+
+  $variables['style_classes'] = $style;
+  $output = theme('panels_bootstrap_pane', $variables);
+  return $output;
 }
 
 /**
@@ -85,15 +107,15 @@ function theme_panels_bootstrap_styles_render_pane(&$variables) {
  */
 function panels_bootstrap_styles_settings_form($settings, $display, $pid, $type, $form_state) {
   $style = $form_state['style'];
-  $style_info = $style['style_info'];
+  $substyle = $style['substyle'];
   $form = array();
 
   $base_class = !empty($style_info['class']) ? $style_info['class'] : $style_info['name'];
 
-  if (!empty($style_info['modifiers'])) {
+  if (!empty($substyle['modifiers'])) {
     // Style provides modifier array.
-    if (is_array($style_info['modifier_classes'])) {
-      $modifier_options = $style_info['modifier_classes'];
+    if (is_array($substyle['modifier_classes'])) {
+      $modifier_options = $substyle['modifier_classes'];
     }
     else {
       $modifier_options = array(
@@ -105,11 +127,11 @@ function panels_bootstrap_styles_settings_form($settings, $display, $pid, $type,
       );
     }
 
-    $form['modifier'] = array(
+    $form['modifier_class'] = array(
       '#title' => t('Style Modifier'),
       '#type' => 'select',
       '#options' => $modifier_options,
-      '#default_value' => $settings['modifier'],
+      '#default_value' => $settings['modifier_class'],
       '#empty_option' => t('Default'),
       '#empty_value' => NULL,
     );
@@ -136,9 +158,9 @@ function panels_bootstrap_styles_settings_form($settings, $display, $pid, $type,
     );
   }
 
-  if (!empty($style_info['hide_classes'])) {
-    if (is_array($style_info['hide_classes'])) {
-      $hide_options = $style_info['hide_classes'];
+  if (!empty($substyle['hide_classes'])) {
+    if (is_array($substyle['hide_classes'])) {
+      $hide_options = $substyle['hide_classes'];
     }
     else {
       $hide_options = array(
@@ -157,9 +179,9 @@ function panels_bootstrap_styles_settings_form($settings, $display, $pid, $type,
     );
   }
 
-  if (!empty($style_info['additional_classes'])) {
-    if (is_array($style_info['additional_classes'])) {
-      $additional_options = $style_info['additional_classes'];
+  if (!empty($substyle['additional_classes'])) {
+    if (is_array($substyle['additional_classes'])) {
+      $additional_options = $substyle['additional_classes'];
     }
     else {
       $additional_options = array(
