@@ -19,6 +19,7 @@ $plugin = array(
     'additional_classes' => array(),
     'collapsible' => FALSE,
     'collapsed' => '',
+    'region_title' => '',
   ),
 );
 
@@ -65,11 +66,44 @@ function panels_bootstrap_styles_merge_plugin($plugin, $style_name, $substyle) {
 /**
  * Theme fuction for the region styles.
  */
-function theme_panels_bootstrap_styles_render_region(&$vars) {
-  $content = $vars['panes'];
-  $settings = $vars['settings'];
+function theme_panels_bootstrap_styles_render_region(&$variables) {
+  $settings = $variables['settings'];
+  $style = $variables['style'];
+  $substyle = $style['substyle'];
 
-  return 'REGION';
+  // Prepare the classes.
+  $base = $substyle['name'];
+  $wrapper_classes = array($base);
+  if (!empty($substyle['modifier_classes'])) {
+    $wrapper_classes[] = !empty($settings['modifier_class']) ? $settings['modifier_class'] : $base . '-default';
+  }
+  $hide_classes = isset($settings['hide_classes']) ? array_filter($settings['hide_classes']) : array();
+  $additional_classes = isset($settings['additional_classes']) ? array_filter($settings['additional_classes']) : array();
+
+  // Combine all wrapper classes together.
+  $wrapper_classes = array_merge($wrapper_classes, $hide_classes, $additional_classes);
+
+  $style = array(
+    'region_title' => !empty($settings['region_title']) ? $settings['region_title'] : '',
+    'wrapper_classes' => $wrapper_classes,
+    'header_class' => $base . '-heading',
+    'title_class' => $base . '-title',
+    'content_class' => $base . '-body',
+    'footer_class' => $base . '-footer',
+    'wrapper_element' => $substyle['wrapper_element'],
+    'header_element' => $substyle['header_element'],
+    'title_element' => $substyle['title_element'],
+    'content_element' => $substyle['content_element'],
+    'footer_element' => $substyle['footer_element'],
+    'links_element' => $substyle['links_element'],
+  );
+
+  $variables['#collapsible'] = !empty($settings['collapsible']);
+  $variables['#collapsed'] = !empty($settings['collapsible']) && !empty($settings['collapsed']);
+
+  $variables['style_settings'] = $style;
+  $output = theme('panels_bootstrap_region', $variables);
+  return $output;
 }
 
 /**
@@ -123,6 +157,15 @@ function panels_bootstrap_styles_settings_form($settings, $display, $pid, $type,
   $form = array();
 
   $base_class = !empty($substyle['class']) ? $substyle['class'] : $substyle['name'];
+
+  if ($type == 'region') {
+    $form['region_title'] = array(
+      '#title' => t('Region Title'),
+      '#type' => 'textfield',
+      '#default_value' => $settings['region_title'],
+      '#description' => t('Specify an optional title to be displayed at the top of the region.'),
+    );
+  }
 
   if (!empty($substyle['modifier_classes'])) {
     // Style provides modifier array.
@@ -186,7 +229,7 @@ function panels_bootstrap_styles_settings_form($settings, $display, $pid, $type,
     $form['hide_classes'] = array(
       '#type' => 'checkboxes',
       '#options' => $hide_options,
-      '#title' => t('Hide this pane on the following devices.'),
+      '#title' => t('Hide this !type on the following devices.', array('!type' => $type)),
       '#default_value' => $settings['hide_classes'],
     );
   }
