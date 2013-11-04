@@ -80,24 +80,36 @@ function theme_panels_bootstrap_styles_render_pane(&$variables) {
   $style = $variables['style'];
   $substyle = $style['substyle'];
 
+  // Prepare the classes.
   $base = $substyle['name'];
-  $modifier = !empty($settings['modifier_class']) ? $settings['modifier_class'] : 'default';
+  $wrapper_classes = array($base);
+  if (!empty($substyle['modifier_classes'])) {
+    $wrapper_classes[] = !empty($settings['modifier_class']) ? $settings['modifier_class'] : $base . '-default';
+  }
+  $hide_classes = isset($settings['hide_classes']) ? array_filter($settings['hide_classes']) : array();
+  $additional_classes = isset($settings['additional_classes']) ? array_filter($settings['additional_classes']) : array();
+
+  // Combine all wrapper classes together.
+  $wrapper_classes = array_merge($wrapper_classes, $hide_classes, $additional_classes);
 
   $style = array(
-    'base_class' => $base,
-    'modifier_class' => $base . '-' . $modifier,
-    'hide' => isset($settings['hide_classes']) ? array_filter($settings['hide_classes']) : array(),
-    'additional' => isset($settings['additional_classes']) ? array_filter($settings['additional_classes']) : array(),
-    'title_class' => $base . '-title',
+    'wrapper_classes' => $wrapper_classes,
     'header_class' => $base . '-heading',
+    'title_class' => $base . '-title',
     'content_class' => $base . '-body',
     'footer_class' => $base . '-footer',
+    'wrapper_element' => $substyle['wrapper_element'],
+    'header_element' => $substyle['header_element'],
+    'title_element' => $substyle['title_element'],
+    'content_element' => $substyle['content_element'],
+    'footer_element' => $substyle['footer_element'],
+    'links_element' => $substyle['links_element'],
   );
 
   $variables['#collapsible'] = !empty($settings['collapsible']);
   $variables['#collapsed'] = !empty($settings['collapsible']) && !empty($settings['collapsed']);
 
-  $variables['style_classes'] = $style;
+  $variables['style_settings'] = $style;
   $output = theme('panels_bootstrap_pane', $variables);
   return $output;
 }
@@ -110,9 +122,9 @@ function panels_bootstrap_styles_settings_form($settings, $display, $pid, $type,
   $substyle = $style['substyle'];
   $form = array();
 
-  $base_class = !empty($style_info['class']) ? $style_info['class'] : $style_info['name'];
+  $base_class = !empty($substyle['class']) ? $substyle['class'] : $substyle['name'];
 
-  if (!empty($substyle['modifiers'])) {
+  if (!empty($substyle['modifier_classes'])) {
     // Style provides modifier array.
     if (is_array($substyle['modifier_classes'])) {
       $modifier_options = $substyle['modifier_classes'];
@@ -137,7 +149,7 @@ function panels_bootstrap_styles_settings_form($settings, $display, $pid, $type,
     );
   }
 
-  if (!empty($style_info['collapsible'])) {
+  if (!empty($substyle['collapsible'])) {
     $form['collapsible'] = array(
       '#title' => t('Collapsible'),
       '#type' => 'checkbox',

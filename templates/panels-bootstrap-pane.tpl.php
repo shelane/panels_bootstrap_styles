@@ -20,15 +20,15 @@
 <?php if ($pane_prefix): ?>
   <?php print $pane_prefix; ?>
 <?php endif; ?>
-<div <?php print $attributes; ?>>
+<<?php print $wrapper_element; ?> <?php print $wrapper_attributes; ?>>
   <?php if ($admin_links): ?>
     <?php print $admin_links; ?>
   <?php endif; ?>
 
   <?php print render($title_prefix); ?>
   <?php if ($title): ?>
-    <div <?php print $header_attributes; ?>>
-      <h3 <?php print $title_attributes; ?>>
+    <<?php print $header_element; ?> <?php print $header_attributes; ?>>
+      <<?php print $title_element; ?> <?php print $title_attributes; ?>>
         <?php if ($collapsible): ?>
           <a href="#<?php print $id; ?>" data-toggle="collapse" data-target="#<?php print $id; ?>">
             <?php print $title; ?>
@@ -36,8 +36,8 @@
         <?php else: ?>
           <?php print $title; ?>
         <?php endif; ?>
-      </h3>
-    </div>
+      </<?php print $title_element; ?>>
+    </<?php print $header_element; ?>>
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
@@ -51,7 +51,7 @@
     </div>
   <?php endif; ?>
 
-  <div <?php print $content_attributes; ?>>
+  <<?php print $content_element; ?> <?php print $content_attributes; ?>>
     <?php print render($content); ?>
   </div>
 
@@ -62,7 +62,7 @@
   <?php endif; ?>
 
   <?php if ($more || $footer): ?>
-    <div <?php print $footer_attributes; ?>
+    <<?php print $footer_element; ?> <?php print $footer_attributes; ?>>
       <?php if ($more): ?>
         <div class="more-links">
           <?php print $more; ?>
@@ -71,13 +71,13 @@
       <?php if ($footer): ?>
         <?php print $footer; ?>
       <?php endif; ?>
-    </div>
+    </<?php print $footer_element; ?>>
   <?php endif; ?>
 
   <?php if ($collapsible): ?>
     </div>
   <?php endif; ?>
-</div>
+</<?php print $wrapper_element; ?>>
 <?php if ($pane_suffix): ?>
   <?php print $pane_suffix; ?>
 <?php endif; ?>
