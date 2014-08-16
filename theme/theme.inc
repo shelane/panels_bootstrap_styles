@@ -176,9 +176,7 @@ function template_preprocess_panels_bootstrap_region(&$vars, $hook) {
   $substyle_suggestion = $hook . $delimiter . $substyle['name'];
   // Add template file suggestion for content type and sub-type.
   $vars['theme_hook_suggestions'][] = $substyle_suggestion;
-  $vars['theme_hook_suggestions'][] = $substyle_suggestion . $delimiter .  $content->type;
-  $vars['theme_hook_suggestions'][] = $substyle_suggestion . $delimiter . strtr($content->type, '-', '_') . $delimiter . strtr($content->subtype, '-', '_');
-
+  $vars['theme_hook_suggestions'][] = $substyle_suggestion . $delimiter .  $vars['region_id'];
 }
 
 
