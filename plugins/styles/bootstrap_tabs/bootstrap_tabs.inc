@@ -16,6 +16,8 @@ $plugin = array(
  * Render callback
  */
 function theme_bootstrap_panels_styles_bootstrap_tabs_render_region(&$variables) {
+  // Remove pane titles using CSS.
+  drupal_add_css(drupal_get_path('module', 'panels_bootstrap_styles') . '/plugins/styles/bootstrap_tabs/bootstrap-tabs.css', 'file');
   $output = theme('panels_bootstrap_tabs', $variables);
   return $output;
 }
