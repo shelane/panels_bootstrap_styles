@@ -61,11 +61,11 @@ function panels_bootstrap_styles_load_substyles($name = NULL) {
   if (empty($substyles)) {
     $substyles = module_invoke_all('panels_bootstrap_substyles');
     $default = array(
-      'description' => '',
+      'description' => 'p',
       // Default elements.
       'wrapper_element' => 'div',
       'header_element' => 'div',
-      'title_element' => 'div',
+      'title_element' => 'h3',
       'content_element' => 'div',
       'links_element' => 'div',
       'footer_element' => 'div',
@@ -98,7 +98,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
       'collapsible' => TRUE,
       'modifier_classes' => TRUE,
       'hide_classes' => TRUE,
-      'additional_classes' => TRUE,
+      'additional_classes' => TRUE
     ),
     'jumbotron' => array(
       'name' => 'jumbotron',
@@ -110,6 +110,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
       'modifier_classes' => FALSE,
       'hide_classes' => TRUE,
       'additional_classes' => TRUE,
+      'title_element' => 'h2'
     ),
     'well' => array(
       'name' => 'well',
@@ -132,6 +133,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
       'modifier_classes' => TRUE,
       'hide_classes' => TRUE,
       'additional_classes' => TRUE,
+      'title_element' => 'strong'
     ),
   );
   return $styles;
