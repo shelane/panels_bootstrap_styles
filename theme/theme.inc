@@ -124,6 +124,9 @@ function template_process_panels_bootstrap_pane(&$variables, $hook) {
   $variables['title_attributes'] = $variables['title_attributes_array'] ? drupal_attributes($variables['title_attributes_array']) : '';
   $variables['content_attributes'] = $variables['content_attributes_array'] ? drupal_attributes($variables['content_attributes_array']) : '';
   $variables['footer_attributes'] = $variables['footer_attributes_array'] ? drupal_attributes($variables['footer_attributes_array']) : '';
+
+  $pane_title = &drupal_static('pane_' . $variables['pane']->pid . '_title');
+  $pane_title = $variables['title'];
 }
 
 /**
@@ -226,11 +229,11 @@ function template_preprocess_panels_bootstrap_tabs(&$variables, $hook) {
       $output = '<li>';
       $i++;
     }
-    $pane_title = &drupal_static($pane_id . '_title');
+    $pane_title = &drupal_static('pane_' . $pane_id . '_title');
     if (empty($pane_title)) {
       $pane_title = 'This pane needs a title.';
     }
-    $output .= '<a href="#pane-' . $pane_id . '" data-toggle="tab">' . $pane_title .  '</a>';
+    $output .= '<a href="#pane-' . $pane_id . '" data-toggle="tab">' . $pane_title . '</a>';
 
     $output .= '</li>';
     $tab_titles[] = $output;
