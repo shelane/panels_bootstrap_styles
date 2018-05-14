@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Theme processings for panel panes and regions.
+ */
+
+/**
  * Implements hook_preprocess_panels_pane_bootstrap().
  */
 function template_preprocess_panels_bootstrap_pane(&$variables, $hook) {
@@ -18,7 +23,7 @@ function template_preprocess_panels_bootstrap_pane(&$variables, $hook) {
   // Basic classes.
   $variables['classes_array'] = array_merge(array('panel-bootstrap-pane'), $variables['style_settings']['wrapper_classes']);
 
-  // Add some usable classes based on type/subtype
+  // Add some usable classes based on type/subtype.
   ctools_include('cleanstring');
   $type_class = $content->type ? 'pane-' . ctools_cleanstring($content->type, array('lower case' => TRUE)) : '';
   $subtype_class = $content->subtype ? 'pane-' . ctools_cleanstring($content->subtype, array('lower case' => TRUE)) : '';
@@ -96,11 +101,9 @@ function template_preprocess_panels_bootstrap_pane(&$variables, $hook) {
   $substyle_suggestion = $hook . $delimiter . $substyle['name'];
   // Add template file suggestion for content type and sub-type.
   $variables['theme_hook_suggestions'][] = $substyle_suggestion;
-  $variables['theme_hook_suggestions'][] = $substyle_suggestion . $delimiter .  $content->type;
+  $variables['theme_hook_suggestions'][] = $substyle_suggestion . $delimiter . $content->type;
   $variables['theme_hook_suggestions'][] = $substyle_suggestion . $delimiter . strtr($content->type, '-', '_') . $delimiter . strtr($content->subtype, '-', '_');
-
 }
-
 
 /**
  * Implements hook_process_panels_bootstrap_pane().
@@ -179,9 +182,8 @@ function template_preprocess_panels_bootstrap_region(&$variables, $hook) {
   $substyle_suggestion = $hook . $delimiter . $substyle['name'];
   // Add template file suggestion for content type and sub-type.
   $variables['theme_hook_suggestions'][] = $substyle_suggestion;
-  $variables['theme_hook_suggestions'][] = $substyle_suggestion . $delimiter .  $variables['region_id'];
+  $variables['theme_hook_suggestions'][] = $substyle_suggestion . $delimiter . $variables['region_id'];
 }
-
 
 /**
  * Implements hook_process_panels_bootstrap_pane().
@@ -221,7 +223,7 @@ function template_preprocess_panels_bootstrap_tabs(&$variables, $hook) {
   // Generate tab titles.
   $i = 0;
   foreach ($panes as $pane_id => $pane) {
-    if ($i == 0 ) {
+    if ($i == 0) {
       $output = '<li class="active">';
       $i++;
     }
@@ -267,8 +269,11 @@ function template_preprocess_panels_bootstrap_tabs(&$variables, $hook) {
 
 /**
  * Prepares the contextual links for the pane.
- * @param $variables
- * @param $content
+ *
+ * @param array $variables
+ *   Provided variables by reference.
+ * @param object $content
+ *   Content from template_preprocess_panels_bootstrap_pane.
  */
 function panels_bootstrap_styles_preprocess_contextual_links(&$variables, $content) {
   $variables['contextual_links'] = array();

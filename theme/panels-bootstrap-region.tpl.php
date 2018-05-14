@@ -1,7 +1,8 @@
 <?php
+
 /**
- * @file panels-pane.tpl.php
- * Main panel pane template
+ * @file
+ * Region panel pane template.
  *
  * Variables available:
  * - $pane->type: the content type inside this pane

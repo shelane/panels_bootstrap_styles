@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Main file for panels bootstrap styles module.
+ */
+
+/**
  * Implements hook_ctools_plugin_directory()
  */
 function panels_bootstrap_styles_ctools_plugin_directory($module, $plugin) {
@@ -52,8 +57,12 @@ function panels_bootstrap_styles_theme() {
 
 /**
  * Retrieves a single or all substyles.
+ *
  * @param string $name
+ *   The name to retrieve a single substyle.
+ *
  * @return array
+ *   The array of substyles.
  */
 function panels_bootstrap_styles_load_substyles($name = NULL) {
   $substyles = &drupal_static(__FUNCTION__, array());
