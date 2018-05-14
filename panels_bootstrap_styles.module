@@ -147,3 +147,13 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
   );
   return $styles;
 }
+
+/**
+ * Implementation of hook_process_panels_pane().
+ */
+function panels_bootstrap_styles_process_panels_pane(&$variables) {
+  // Store pane title in static cache so we can use it at the region level.
+  $pane_id = $variables['pane']->pid;
+  $pane_title = &drupal_static('pane_' . $pane_id . '_title');
+  $pane_title = $variables['title'];
+}
