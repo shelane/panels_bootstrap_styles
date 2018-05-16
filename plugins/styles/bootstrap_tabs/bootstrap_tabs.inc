@@ -42,5 +42,16 @@ function bootstrap_panels_styles_bootstrap_tabs_settings_form($style_settings) {
     '#default_value' => (isset($style_settings['tab_type'])) ? $style_settings['tab_type'] : 'nav-tabs',
   );
 
+  $form['tab_display'] = array(
+    '#title' => t('Tab display'),
+    '#type' => 'select',
+    '#options' => array(
+      'default' => t('Default'),
+      'nav-stacked' => t('Stacked'),
+      'nav-justified' => t('Justified'),
+    ),
+    '#default_value' => (isset($style_settings['tab_display'])) ? $style_settings['tab_display'] : 'default',
+  );
+
   return $form;
 }

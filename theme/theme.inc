@@ -255,6 +255,9 @@ function template_preprocess_panels_bootstrap_tabs(&$variables, $hook) {
   // Add tab classes.
   $variables['tab_classes_array'][] = 'nav';
   $variables['tab_classes_array'][] = !empty($settings['tab_type']) ? $settings['tab_type'] : 'nav-tabs';
+  if (!empty($settings['tab_display']) && $settings['tab_display'] != 'default') {
+    $variables['tab_classes_array'][] = $settings['tab_display'];
+  }
   $variables['tab_classes'] = implode(' ', $variables['tab_classes_array']);
   // Add nav wrapper classes.
   $variables['nav_wrapper_classes_array'][] = 'nav-wrapper';
