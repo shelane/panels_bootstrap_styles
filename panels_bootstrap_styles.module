@@ -15,6 +15,39 @@ function panels_bootstrap_styles_ctools_plugin_directory($module, $plugin) {
 }
 
 /**
+ * Implements hook_help().
+ */
+function panels_bootstrap_styles_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#panels_bootstrap_styles':
+
+      $filepath = dirname(__FILE__) . '/README.md';
+      if (file_exists($filepath)) {
+        $readme = file_get_contents($filepath);
+      }
+      if (!isset($readme)) {
+        return NULL;
+      }
+      if (module_exists('markdown')) {
+        $filters = module_invoke('markdown', 'filter_info');
+        $info = $filters['filter_markdown'];
+
+        if (function_exists($info['process callback'])) {
+          $output = $info['process callback']($readme, NULL);
+        }
+        else {
+          $output = '<pre>' . $readme . '</pre>';
+        }
+      }
+      else {
+        $output = '<pre>' . $readme . '</pre>';
+      }
+
+      return $output;
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function panels_bootstrap_styles_theme() {
@@ -112,7 +145,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
     'panel' => array(
       'name' => 'panel',
       'title' => 'Panel',
-      'description' => t('Renders as Bootstrap panel component.'),
+      'description' => t('Renders as Bootstrap panel class.'),
       'panes' => TRUE,
       'regions' => TRUE,
       'collapsible' => TRUE,
@@ -123,7 +156,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
     'jumbotron' => array(
       'name' => 'jumbotron',
       'title' => 'Jumbotron',
-      'description' => t('Renders as Bootstrap jumbotron component.'),
+      'description' => t('Renders as Bootstrap jumbotron class.'),
       'panes' => TRUE,
       'regions' => TRUE,
       'collapsible' => FALSE,
@@ -135,7 +168,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
     'well' => array(
       'name' => 'well',
       'title' => 'Well',
-      'description' => t('Renders as Bootstrap well component.'),
+      'description' => t('Renders as Bootstrap well class.'),
       'panes' => TRUE,
       'regions' => TRUE,
       'collapsible' => FALSE,
@@ -146,7 +179,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
     'alert' => array(
       'name' => 'alert',
       'title' => 'Alert',
-      'description' => t('Renders as Bootstrap alert component.'),
+      'description' => t('Renders as Bootstrap alert class.'),
       'panes' => TRUE,
       'regions' => FALSE,
       'collapsible' => FALSE,
