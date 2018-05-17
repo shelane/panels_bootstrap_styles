@@ -112,7 +112,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
     'panel' => array(
       'name' => 'panel',
       'title' => 'Panel',
-      'description' => t('Renders as Bootstrap panel class.'),
+      'description' => t('Renders as Bootstrap panel component.'),
       'panes' => TRUE,
       'regions' => TRUE,
       'collapsible' => TRUE,
@@ -123,7 +123,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
     'jumbotron' => array(
       'name' => 'jumbotron',
       'title' => 'Jumbotron',
-      'description' => t('Renders as Bootstrap jumbotron class.'),
+      'description' => t('Renders as Bootstrap jumbotron component.'),
       'panes' => TRUE,
       'regions' => TRUE,
       'collapsible' => FALSE,
@@ -135,7 +135,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
     'well' => array(
       'name' => 'well',
       'title' => 'Well',
-      'description' => t('Renders as Bootstrap well class.'),
+      'description' => t('Renders as Bootstrap well component.'),
       'panes' => TRUE,
       'regions' => TRUE,
       'collapsible' => FALSE,
@@ -146,7 +146,7 @@ function panels_bootstrap_styles_panels_bootstrap_substyles() {
     'alert' => array(
       'name' => 'alert',
       'title' => 'Alert',
-      'description' => t('Renders as Bootstrap alert class.'),
+      'description' => t('Renders as Bootstrap alert component.'),
       'panes' => TRUE,
       'regions' => FALSE,
       'collapsible' => FALSE,
