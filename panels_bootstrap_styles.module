@@ -15,6 +15,39 @@ function panels_bootstrap_styles_ctools_plugin_directory($module, $plugin) {
 }
 
 /**
+ * Implements hook_help().
+ */
+function panels_bootstrap_styles_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#panels_bootstrap_styles':
+
+      $filepath = dirname(__FILE__) . '/README.md';
+      if (file_exists($filepath)) {
+        $readme = file_get_contents($filepath);
+      }
+      if (!isset($readme)) {
+        return NULL;
+      }
+      if (module_exists('markdown')) {
+        $filters = module_invoke('markdown', 'filter_info');
+        $info = $filters['filter_markdown'];
+
+        if (function_exists($info['process callback'])) {
+          $output = $info['process callback']($readme, NULL);
+        }
+        else {
+          $output = '<pre>' . $readme . '</pre>';
+        }
+      }
+      else {
+        $output = '<pre>' . $readme . '</pre>';
+      }
+
+      return $output;
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function panels_bootstrap_styles_theme() {
